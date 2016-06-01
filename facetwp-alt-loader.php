@@ -29,7 +29,7 @@ function facetwp_facet_loading_animator(){
 	<script>
 	if( FWP ){ 
 		var facets = {};
-		jQuery( '.facetwp-facet' ).css({position: "relative"});
+		jQuery( '.facetwp-facet' ).css({position: "relative", "min-height" : 40 });
 		FWP.loading_handler = function( args ){
 
 			var height = args.element.height(),
