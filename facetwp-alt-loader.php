@@ -28,7 +28,23 @@ function facetwp_facet_loading_animator(){
 	?>
 	<script>
 	if( FWP ){ 
-		var facets = {};
+		var facets = {},
+			wrap_resizer;
+
+		wrap_resizer = function( facet ){
+			if( ! facets[ facet ] || ! facets[ facet ].height ){ return; }
+			facets[ facet ].element.css({
+				height: ''
+			});
+			var new_height = facets[ facet ].element.height();
+			
+			facets[ facet ].element.height( facets[ facet ].height );
+			facets[ facet ].element.animate( {
+				opacity: 1,
+				height: new_height
+			}, 300 );
+		}
+
 		jQuery( '.facetwp-facet' ).css({position: "relative", "min-height" : 40 });
 		FWP.loading_handler = function( args ){
 
@@ -51,21 +67,16 @@ function facetwp_facet_loading_animator(){
 			};
 		}
 		jQuery(document).on('click', '.facetwp-toggle', function() {
-			jQuery( document ).trigger('facetwp-resize');
+			var wrapper 	= jQuery( this ).closest( '.facetwp-facet' ),
+				facet_name 	= wrapper.data('name');
+			if( facet_name && facets[ facet_name ] ){
+				facets[ facet_name ].height = wrapper.height();
+				wrap_resizer( facet_name );
+			}			
 		});
-		jQuery( document ).on('facetwp-loaded facetwp-resize', function(){
+		jQuery( document ).on('facetwp-loaded', function( ev ){
 			for( var e in facets ){
-				if( ! facets[ e ].height ){ continue; }
-				facets[ e ].element.css({
-					height: ''
-				});
-				var new_height = facets[ e ].element.height();
-				
-				facets[ e ].element.height( facets[ e ].height );
-				facets[ e ].element.animate( {
-					opacity: 1,
-					height: new_height
-				}, 300 );
+				wrap_resizer( e );
 			}
 			
 		})
