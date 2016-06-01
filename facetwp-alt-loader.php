@@ -51,9 +51,9 @@ function facetwp_facet_loading_animator(){
 			};
 		}
 		jQuery(document).on('click', '.facetwp-toggle', function() {
-			jQuery( document ).trigger('facetwp-loaded');
+			jQuery( document ).trigger('facetwp-resize');
 		});
-		jQuery( document ).on('facetwp-loaded', function(){
+		jQuery( document ).on('facetwp-loaded facetwp-resize', function(){
 			for( var e in facets ){
 				if( ! facets[ e ].height ){ continue; }
 				facets[ e ].element.css({
